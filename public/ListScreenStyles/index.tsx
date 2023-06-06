@@ -21,10 +21,41 @@ export const TodoBox = styled.View`
   background-color: #565661;
   height: 50px;
   border-radius: 10px;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin-left: 15px;
+  margin-right: 15px;
 `;
 
-export const Todo = styled.View`
-  gap: 30px;
+export const Todo = styled.ScrollView`
+  gap: 10px;
+  max-height: 700px;
+`;
+
+export const AddTodo = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 10px;
+  background-color: #565661;
+  margin-top: 20px;
+`;
+
+export const AddTodoText = styled.TextInput`
+  padding-left: 20px;
+  color: white;
+  width: 79%;
+`;
+
+export const AddTodoButton = styled.TouchableOpacity`
+  background-color: #34eb4c;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  border-radius: 50px;
 `;
