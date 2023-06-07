@@ -6,22 +6,27 @@ import {
   Main,
   Title,
   UserInput,
-} from '../../public/LoginScreenStyles';
+} from './components';
 import {Text} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { incrementUser } from '../../redux/States';
 
 interface IUser {
   username: string;
   password: string;
 }
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation }: any) {
+
+  const dispatch = useDispatch()
+  
   const [user, setUser] = useState<IUser>({
     username: '',
     password: '',
   });
 
   const buttonDisabled = () => {
-    if (user.username.length === 0 || user.password.length === 0) {
+    if (user.username.trim() === '' || user.password.trim() === ''){
       return true;
     }
     return false;
@@ -43,7 +48,6 @@ export default function LoginScreen({ navigation }) {
         <UserInput
           placeholder="Digite Sua Senha"
           placeholderTextColor="white"
-          keyboardType="numeric"
           value={user.password}
           onChangeText={passwordText =>
             setUser({...user, password: passwordText})
@@ -52,7 +56,7 @@ export default function LoginScreen({ navigation }) {
         <LoginButton
           activeOpacity={1}
           disabled={buttonDisabled()}
-          onPress={() => navigation.navigate('List', { name: user.username })}>
+          onPress={() => navigation.navigate('List', dispatch(incrementUser(user.username)))}>
           <Text>Login</Text>
         </LoginButton>
       </Container>

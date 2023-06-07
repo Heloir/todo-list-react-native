@@ -23,10 +23,10 @@ export const TodoBox = styled.View`
   border-radius: 10px;
   margin-left: 15px;
   margin-right: 15px;
+  margin-top: 10px;
 `;
 
 export const Todo = styled.ScrollView`
-  gap: 10px;
   max-height: 700px;
 `;
 

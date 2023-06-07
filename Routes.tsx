@@ -1,15 +1,17 @@
 import React from 'react';
 import {NavigationContainer, ParamListBase} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from './screens/LoginScreen/App';
-import ListScreen from './screens/ListScreen/App';
-
-
+import LoginScreen from './screens/LoginScreen';
+import ListScreen from './screens/ListScreen';
+import { Provider, useSelector } from 'react-redux'
+import { RootState } from './redux/Store';
 
 const Stack = createNativeStackNavigator<ParamListBase>();
 
-export default function App() {
-  return (
+export default function RoutesNavigation() {
+    const username = useSelector((state: RootState) => state.todo.username)
+    
+    return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
@@ -22,9 +24,9 @@ export default function App() {
         <Stack.Screen
           name="List"
           component={ListScreen}
-          options={({route}) => ({title: route.params.name})}
+          options={() => ({title: username})}
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+    )
 }

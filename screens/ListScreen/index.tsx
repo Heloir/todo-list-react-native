@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   AddTodo,
   AddTodoButton,
@@ -6,20 +6,42 @@ import {
   Main,
   Todo,
   TodoBox,
-} from '../../public/ListScreenStyles';
+} from './components';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Text} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../redux/Store';
+import {incrementTodoList} from '../../redux/States';
+
+interface ITodo {
+  index?: number;
+  text: string;
+  isChecked?: boolean;
+}
 
 export default function ListScreen() {
-  const [todos, setTodos] = useState([] as any);
+  const dispatch = useDispatch();
 
-  const [todoText, setTodoText] = useState('');
+  const [todos, setTodos] = useState<ITodo[]>([]);
+
+  const todoList = useSelector((state: RootState) => state.todo.todos);
+
+  const [todoValues, setTodoValues] = useState({
+    todoText: '',
+    checked: false,
+  });
 
   function addTodo() {
-    if (todoText.trim() !== '') {
-      const newTodos = [...todos, {text: todoText}];
+    if (todoValues.todoText.trim() !== '') {
+      const newTodos = [
+        ...todos,
+        {text: todoValues.todoText, checked: todoValues.checked},
+      ];
       setTodos(newTodos);
-      setTodoText('');
+
+      newTodos.map(todo => {
+        dispatch(incrementTodoList(todo.text));
+      });
     }
   }
 
@@ -29,8 +51,10 @@ export default function ListScreen() {
         <AddTodoText
           placeholder="Adicionar Tarefa"
           placeholderTextColor={'white'}
-          value={todoText}
-          onChangeText={(text: string) => setTodoText(text)}
+          value={todoValues.todoText}
+          onChangeText={(text: string) =>
+            setTodoValues({todoText: text, checked: false})
+          }
         />
 
         <AddTodoButton activeOpacity={1} onPress={addTodo}>
@@ -39,7 +63,9 @@ export default function ListScreen() {
       </AddTodo>
 
       <Todo>
-        {todos.map((item: any) => {
+        {todoList.map((item: ITodo) => {
+          if (item.text === '') return <></>;
+
           return (
             <TodoBox key={item.index}>
               <BouncyCheckbox
@@ -52,6 +78,7 @@ export default function ListScreen() {
                   fontFamily: 'JosefinSans-Regular',
                   color: 'white',
                   overflow: 'hidden',
+                  minWidth: '80%',
                   maxWidth: '90%',
                 }}
                 onPress={(isChecked: boolean) => {}}
