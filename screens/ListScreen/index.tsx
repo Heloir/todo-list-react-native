@@ -4,6 +4,7 @@ import {
   AddTodoButton,
   AddTodoText,
   Main,
+  RemoveTodoButton,
   Todo,
   TodoBox,
 } from './components';
@@ -11,37 +12,28 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/Store';
-import {incrementTodoList} from '../../redux/States';
-
-interface ITodo {
-  index?: number;
-  text: string;
-  isChecked?: boolean;
-}
+import {incrementTodoList, incrementremoveTodo} from '../../redux/States';
 
 export default function ListScreen() {
   const dispatch = useDispatch();
 
-  const [todos, setTodos] = useState<ITodo[]>([]);
-
   const todoList = useSelector((state: RootState) => state.todo.todos);
 
   const [todoValues, setTodoValues] = useState({
+    id: 0,
     todoText: '',
     checked: false,
   });
 
   function addTodo() {
     if (todoValues.todoText.trim() !== '') {
-      const newTodos = [
-        ...todos,
-        {text: todoValues.todoText, checked: todoValues.checked},
-      ];
-      setTodos(newTodos);
+      const newTodos = {
+        id: todoValues.id++,
+        text: todoValues.todoText,
+        checked: todoValues.checked,
+      };
 
-      newTodos.map(todo => {
-        dispatch(incrementTodoList(todo.text));
-      });
+      dispatch(incrementTodoList(newTodos.text));
     }
   }
 
@@ -53,7 +45,11 @@ export default function ListScreen() {
           placeholderTextColor={'white'}
           value={todoValues.todoText}
           onChangeText={(text: string) =>
-            setTodoValues({todoText: text, checked: false})
+            setTodoValues({
+              id: todoValues.id,
+              todoText: text,
+              checked: todoValues.checked,
+            })
           }
         />
 
@@ -63,11 +59,11 @@ export default function ListScreen() {
       </AddTodo>
 
       <Todo>
-        {todoList.map((item: ITodo) => {
+        {todoList.map(item => {
           if (item.text === '') return <></>;
 
           return (
-            <TodoBox key={item.index}>
+            <TodoBox key={item.id}>
               <BouncyCheckbox
                 size={25}
                 unfillColor="#FFFFFF"
@@ -81,8 +77,19 @@ export default function ListScreen() {
                   minWidth: '80%',
                   maxWidth: '90%',
                 }}
-                onPress={(isChecked: boolean) => {}}
+                isChecked={item.checked}
+                onPress={(isChecked: boolean) => {
+                  item.checked = isChecked;
+                }}
               />
+
+              <RemoveTodoButton
+                activeOpacity={1}
+                onPress={() => {
+                  dispatch(incrementremoveTodo(item.id));
+                }}>
+                <Text style={{color: 'white'}}>X</Text>
+              </RemoveTodoButton>
             </TodoBox>
           );
         })}

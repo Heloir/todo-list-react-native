@@ -1,32 +1,25 @@
 import React, {useState} from 'react';
 
-import {
-  Container,
-  LoginButton,
-  Main,
-  Title,
-  UserInput,
-} from './components';
+import {Container, LoginButton, Main, Title, UserInput} from './components';
 import {Text} from 'react-native';
-import { useDispatch } from 'react-redux';
-import { incrementUser } from '../../redux/States';
+import {useDispatch} from 'react-redux';
+import {incrementUser} from '../../redux/States';
 
 interface IUser {
   username: string;
   password: string;
 }
 
-export default function LoginScreen({ navigation }: any) {
+export default function LoginScreen({navigation}: any) {
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
-  
   const [user, setUser] = useState<IUser>({
     username: '',
     password: '',
   });
 
   const buttonDisabled = () => {
-    if (user.username.trim() === '' || user.password.trim() === ''){
+    if (user.username.trim() === '' || user.password.trim() === '') {
       return true;
     }
     return false;
@@ -56,7 +49,9 @@ export default function LoginScreen({ navigation }: any) {
         <LoginButton
           activeOpacity={1}
           disabled={buttonDisabled()}
-          onPress={() => navigation.navigate('List', dispatch(incrementUser(user.username)))}>
+          onPress={() =>
+            navigation.navigate('List', dispatch(incrementUser(user.username)))
+          }>
           <Text>Login</Text>
         </LoginButton>
       </Container>

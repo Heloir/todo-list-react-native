@@ -30,13 +30,12 @@ export const UserInput = styled.TextInput`
   border-radius: 10px;
 `;
 
-
 export const LoginButton = styled.TouchableOpacity`
   width: 300px;
   height: 40px;
   border-radius: 10px;
-  background-color: ${({ disabled }) => !disabled ? '#34eb4c' : 'gray'};
+  background-color: ${({disabled}) => (!disabled ? '#34eb4c' : 'gray')};
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;

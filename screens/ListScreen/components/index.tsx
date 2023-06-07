@@ -17,7 +17,8 @@ export const Title = styled.Text`
 
 export const TodoBox = styled.View`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  flex-direction: row;
   background-color: #565661;
   height: 50px;
   border-radius: 10px;
@@ -58,4 +59,14 @@ export const AddTodoButton = styled.TouchableOpacity`
   align-items: center;
   margin-right: 10px;
   border-radius: 50px;
+`;
+
+export const RemoveTodoButton = styled.TouchableOpacity`
+  background-color: #9e0404;
+  width: 50px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
 `;
